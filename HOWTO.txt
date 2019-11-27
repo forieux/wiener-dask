@@ -1,0 +1,45 @@
+###############################################
+Stagiaire: MOROOKA Fabio Eid
+Encadrants: ORIEUX François et GAC Nicolas 
+Lieu: Laboratoire des Signaux et Systemes (L2S)
+Date: 20/05/2019 - 23/09/2019
+###############################################
+
+Pour utiliser les codes dask sur le cluster fusion:
+1) Entrer dans la session fusion avec: "ssh login@fusion.centralesupelec.fr"
+2) Creer une environemment virtuel sur votre session fusion. Cette partie est decrit ci-dessous, et le procédure plus detaillè est dans le tutoriel dask (https://www.overleaf.com/read/zkmxphmfvqrw)
+2.1) Dans la home créé une dossier ".conda" avec la commande: "mkdir $WORKDIR/.conda" 
+2.2) Ensuite il faut creer le lien symbolique avec la commande: "ln -s $WORKDIR/.conda ~/.conda"   
+2.3) Charge le module anaconda dans la session "module load anaconda2/2019.03"
+2.4) Creer une dossier avec le nom de l'environemment virtuel avec la commande: "conda create -n myenv"
+2.5) A ce moment le dossier de l'environemment est: "/home/login/.conda/envs/myenv"
+2.6) Pour initializer l'environemment il faut utiliser la commande "conda activate myenv"
+2.7) Ensuite vous pouvez installer les libraries python avec "conda install nomLibrarie" (les libraries plus importants sont dans le tutoriel dask)
+
+Nb.: Avec l'environemment virtuel il est possible de lancer les codes dans les queue avec une script PBS et soumettre dans la queue du cluster avec la commande "qsub"
+Pour utiliser dask avec la dashboard il faut utiliser jupyter, donc il faut installer jupyter dans cette environemment. "conda install jupyterlab"
+
+3) Ensuite avant lancer le notebook jupyter il est mieux de mettre une mot de passe dans votre notebook, pour cela il faut creer une fichier de configuration en cas il n'y a pas. "jupyter lab --generate-config" Pour vérifier si le ficher exist, il est dans le dossier: ~/.jupyter/jupyter_notebook_config.py
+4) Ouvrir cette fichier et ensuite changer la ligne "c.NotebookApp.password = ''", il faut mettre une mot de passe 'hashed', pour cela il faut ouvrir une nouveau terminal local.
+5) Dans cette terminal il faut lancer python et ensuite utiliser la fonction passwd().
+
+In [1]:from notebook.auth import passwd
+In [2]: passwd()
+Enter password:
+Verify password:
+Out[2]: 'sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed'
+
+Le mot de passe definit avant sera le mot de passe de votre notebook.
+Ensuite copier la sortie 'sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed' (dans ce cas)
+Et coler cette sortie dans la ligne "c.NotebookApp.password = 'sha1:67c9e60bb8b6:9ffede0825894254b2e042ea597d771089e11aed' "
+Après vous pouvez sauvegarder le fichier de configuration.
+
+6) Ensuite pour lancer le notebook jupyter il faut utiliser la commande: "jupyter lab --no-browser"
+7) Après vous pouvez faire une tunnel ssh pour eviter de lancer le navegateur dans la frontal: "ssh -L 2000:localhost:8888  morooka@fusion.centralesupelec.fr"
+8) Ensuite dans votre machine lance une navegateur et utiliser l'adresse définit avant pour entrer dans votre notebook "localhost:2000"
+Nb.: Quand vous lancez la dashboard il faut faire une autre tunnel ssh pour cette adresse aussi.
+
+9) Pour sortir du notebook vous pouvez fermer la fenetre du navegateur et utiliser la commande "ctrl+c" dans le terminal.
+
+
+
